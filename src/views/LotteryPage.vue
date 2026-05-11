@@ -348,26 +348,28 @@ async function loadPrizesForStrip() {
   try {
     // 添加时间戳防止缓存
     const res = await axios.get('/api/lottery/config', { 
-      timeout: 5000,
+      timeout: 8000,
       params: { _t: Date.now() }
     })
     
     let finalPrizes = []
     const data = res.data || {}
     
+    console.log('[API原始数据]', JSON.stringify(data).substring(0, 500))
+    
     // 策略1: 按当前tab的分类获取
     const catKey = categories[activeTab.value]?.key || 'bowen'
     const prizesByCat = data._prizesByCategory || {}
+    console.log('[分类数据]', JSON.stringify(prizesByCat))
     
-    if (prizesByCat[catKey]?.length > 0) {
+    if (Array.isArray(prizesByCat[catKey]) && prizesByCat[catKey].length > 0) {
       finalPrizes = prizesByCat[catKey]
     } 
-    // 策略2: 遍历所有分类，取第一个有数据的
-    else if (Object.keys(prizesByCat).length > 0) {
+    // 策略2: 遍历所有分类，取第一个有数据的（合并所有分类）
+    else if (typeof prizesByCat === 'object' && Object.keys(prizesByCat).length > 0) {
       for (const key of Object.keys(prizesByCat)) {
-        if (prizesByCat[key]?.length > 0) {
-          finalPrizes = prizesByCat[key]
-          break
+        if (Array.isArray(prizesByCat[key]) && prizesByCat[key].length > 0) {
+          finalPrizes = finalPrizes.concat(prizesByCat[key])
         }
       }
     }
@@ -375,22 +377,31 @@ async function loadPrizesForStrip() {
     if (finalPrizes.length === 0 && Array.isArray(data._prizes)) {
       finalPrizes = data._prizes
     }
+    // 策略4: 兼容旧格式 success.data.prizes
+    if (finalPrizes.length === 0 && data.success?.data?.prizes) {
+      const pObj = data.success.data.prizes
+      if (Array.isArray(pObj)) {
+        finalPrizes = pObj
+      } else if (typeof pObj === 'object') {
+        for (const key of Object.keys(pObj)) {
+          if (Array.isArray(pObj[key])) finalPrizes = finalPrizes.concat(pObj[key])
+        }
+      }
+    }
 
-    console.log('[奖品轮播] 分类:', catKey, '获取到:', finalPrizes.length, '个奖品', JSON.stringify(finalPrizes.slice(0,2)))
+    console.log('[最终奖品数]', finalPrizes.length, finalPrizes.map(p => p.name))
 
-    // 对比数据是否变化，避免不必要的DOM更新
+    // 构建新列表
     const newItems = (Array.isArray(finalPrizes) ? finalPrizes : []).map(p => ({
       id: p.id, name: p.name, image: p.image || ''
     }))
     
-    // 检查是否有变化（长度或内容）
-    if (newItems.length !== prizeStripItems.length || 
-        newItems.some((item, i) => item.id !== prizeStripItems[i]?.id || item.name !== prizeStripItems[i]?.name)) {
-      prizeStripItems.length = 0
-      newItems.forEach(p => prizeStripItems.push(p))
-    }
+    // 始终更新（确保同步）
+    prizeStripItems.length = 0
+    newItems.forEach(p => prizeStripItems.push(p))
+    
   } catch(e) {
-    console.log('奖品轮播加载失败:', e.message)
+    console.error('奖品轮播加载失败:', e.message)
   }
 }
 
