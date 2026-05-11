@@ -6,9 +6,19 @@ let db = null;
 let dbPath;
 
 async function initDatabase() {
-  // 确定数据目录（Render 使用 /data 持久化，本地用 server/data）
+  // 确定数据目录（Render: /data, Railway: /data, 本地: server/data）
   const isRender = process.env.RENDER === 'true' || process.env.RENDER_SERVICE_ID;
-  const dataDir = isRender ? '/data' : path.join(__dirname, '../data');
+  const isRailway = process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_VOLUME_PATH;
+  let dataDir;
+  
+  if (isRailway) {
+    dataDir = '/data';
+  } else if (isRender) {
+    dataDir = '/data';
+  } else {
+    dataDir = path.join(__dirname, '../data');
+  }
+  
   const uploadsDir = path.join(__dirname, '../uploads');
   
   if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
