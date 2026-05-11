@@ -149,7 +149,7 @@
       <div class="strip-label">奖品池</div>
       <div class="strip-track" :class="{ paused: stripPaused }"
            @mouseenter="stripPaused = true" @mouseleave="stripPaused = false">
-        <div v-for="(item, i) in prizeStripItemsDuplicated" :key="'ps'+i" class="strip-card">
+        <div v-for="(item, i) in prizeStripItems" :key="'ps'+i" class="strip-card">
           <img v-if="item.image" :src="item.image" :alt="item.name" class="strip-card-img" />
           <div v-else class="strip-card-img strip-no-img">{{ item.name?.charAt(0) || '?' }}</div>
           <div v-if="item.name" class="strip-card-name">{{ item.name }}</div>
@@ -250,7 +250,6 @@ const claimOptions = reactive({
 // 公告/轮播
 const noticeList = reactive([])
 const prizeStripItems = reactive([])
-const prizeStripItemsDuplicated = computed(() => [...prizeStripItems, ...prizeStripItems])
 const stripPaused = ref(false)
 
 // 跑马灯文本

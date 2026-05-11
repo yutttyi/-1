@@ -4,16 +4,9 @@ const { getDB } = require('../db/init');
 const multer = require('multer');
 const path = require('path');
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, path.join(__dirname, '../uploads')),
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, `prize_${Date.now()}${ext}`);
-  }
-});
-
+// 使用内存存储（适配 Railway 无状态环境）
 const upload = multer({ 
-  storage,
+  storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowed = /jpeg|jpg|png|gif|webp/;
@@ -21,12 +14,20 @@ const upload = multer({
   }
 });
 
-// 奖品图片上传
+// 奖品图片上传 - 返回 Base64
 router.post('/upload', (req, res) => {
   upload.single('image')(req, res, (err) => {
     if (err) return res.status(400).json({ error: '上传失败：' + err.message });
     if (!req.file) return res.status(400).json({ error: '请选择文件' });
-    res.json({ url: `/uploads/${req.file.filename}` });
+    
+    // 转换为 Base64 Data URL，直接存入数据库
+    const ext = path.extname(req.file.originalname).toLowerCase();
+    const mimeMap = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.gif': 'image/gif', '.webp': 'image/webp' };
+    const mime = mimeMap[ext] || 'image/jpeg';
+    const base64 = req.file.buffer.toString('base64');
+    const dataUrl = `data:${mime};base64,${base64}`;
+    
+    res.json({ url: dataUrl });
   });
 });
 
