@@ -47,13 +47,20 @@ router.get('/config', (req, res) => {
     configMap[`_meta_${c.key}`] = { type: c.type, category: c.category, label: c.label };
   });
 
-  // 按分类获取奖品列表
-  const categories = ['bowen', 'aisee'];
+  // 动态获取所有分类
+  let allCategories = [];
+  try {
+    const catRows = db.queryAll("SELECT DISTINCT category FROM prizes WHERE is_active = 1");
+    allCategories = (catRows || []).map(r => r.category);
+  } catch(e) {}
+  if (!allCategories.length) allCategories = ['bowen', 'aisee'];
+
+  // 按分类获取奖品列表（显示所有活跃奖品，用于轮播展示）
   const prizesByCategory = {};
-  for (const cat of categories) {
+  for (const cat of allCategories) {
     try {
       const catPrizes = db.queryAll(
-        "SELECT id, name, image, remaining_stock, category FROM prizes WHERE is_active = 1 AND remaining_stock > 0 AND category = ? ORDER BY sort_order, id",
+        "SELECT id, name, image, remaining_stock, category FROM prizes WHERE is_active = 1 AND category = ? ORDER BY sort_order, id",
         [cat]
       );
       prizesByCategory[cat] = catPrizes || [];
@@ -62,17 +69,17 @@ router.get('/config', (req, res) => {
     }
   }
 
-  // 获取所有可用奖品（兼容旧逻辑）
+  // 获取所有可用奖品（兼容旧逻辑）- 显示所有活跃奖品
   let allPrizes = [];
   try {
     allPrizes = db.queryAll(
-      "SELECT id, name, image, remaining_stock FROM prizes WHERE is_active = 1 AND remaining_stock > 0 ORDER BY sort_order, id"
+      "SELECT id, name, image, remaining_stock FROM prizes WHERE is_active = 1 ORDER BY sort_order, id"
     );
   } catch(e) {}
 
   // 获取各分类抽奖券数量
   const ticketsByCategory = {};
-  for (const cat of categories) {
+  for (const cat of allCategories) {
     try {
       const ticket = db.queryOne("SELECT total_tickets FROM ticket_pools WHERE category = ?", [cat]);
       ticketsByCategory[cat] = ticket ? ticket.total_tickets : 50;
