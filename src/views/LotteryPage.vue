@@ -1,5 +1,10 @@
 <template>
   <div class="lottery-page" :class="{ 'shaking': isShaking }">
+    <!-- ═══ 背景音乐（自动循环） ═══ -->
+    <audio ref="bgsound" loop preload="auto" style="display:none;">
+      <source src="/bgsound.mp3" type="audio/mpeg" />
+    </audio>
+
     <!-- ═══ 街机边框 ═══ -->
     <div class="arcade-frame"></div>
 
@@ -222,7 +227,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, nextTick } from 'vue'
+import { ref, reactive, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import axios from 'axios'
 import PrizeCard from '../components/PrizeCard.vue'
 
@@ -533,8 +538,31 @@ function formatTime(timeStr) {
 }
 
 // ==================== 初始化 ====================
+// 背景音乐控制
+const bgsound = ref(null)
+let soundPlayed = false
+
+function playBgsound() {
+  if (soundPlayed || !bgsound.value) return
+  bgsound.value.play().catch(() => {})
+  soundPlayed = true
+}
+
 onMounted(async () => {
   await Promise.all([loadNoticeData(), loadPrizesForStrip(), loadConfig(), loadBagCount()])
+  // 尝试静音自动播放，用户交互后恢复音量
+  if (bgsound.value) {
+    bgsound.value.volume = 0.3
+    bgsound.value.play().catch(() => {})
+    // 监听用户首次点击/触摸后确保播放
+    document.addEventListener('click', playBgsound, { once: true })
+    document.addEventListener('touchstart', playBgsound, { once: true })
+  }
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', playBgsound)
+  document.removeEventListener('touchstart', playBgsound)
 })
 </script>
 
