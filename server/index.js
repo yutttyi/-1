@@ -22,6 +22,11 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // 初始化数据库
 initDatabase();
 
+// 健康检查端点（Railway 需要）
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', time: new Date().toISOString() });
+});
+
 // API路由
 app.use('/api/lottery', lotteryRoutes);
 app.use('/api/admin', adminRoutes);
