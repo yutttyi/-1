@@ -971,7 +971,7 @@ onMounted(async () => {
   color: var(--px-white, #fff);
   font-size: 16px;
   font-weight: bold;
-  width: 100px;
+  padding: 0 25px;
   border-right: 6px solid var(--px-black, #000);
   display: flex;
   flex-direction: column;
