@@ -35,7 +35,7 @@ jobs:
 
       - name: Build frontend
         env:
-          GITHUB_ACTIONS: true
+          GITHUB_PAGES: true
           API_URL: ${{ vars.API_URL || '' }}
         run: npm run build
 
