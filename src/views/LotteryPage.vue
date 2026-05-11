@@ -270,6 +270,8 @@ const stripPaused = ref(false)
 // 自动刷新定时器
 let prizeRefreshTimer = null
 const PRIZE_REFRESH_INTERVAL = 15000 // 每15秒自动刷新奖品数据
+const API_TIMEOUT = 20000 // API超时时间20秒
+const MAX_RETRIES = 3 // 最大重试次数
 
 // 跑马灯文本
 const tickerText = ref('🚀 云端挑战已开启！恭喜 AICODING_VIP 获得传说级大奖！ 🚀 不要停下来，大奖在向你招手！ 🚀')
@@ -329,7 +331,7 @@ const rightFastCloudsDup = rightFastClouds.map(c => ({
 // ==================== API 加载 ====================
 async function loadNoticeData() {
   try {
-    const res = await axios.get('/api/lottery/user/records', { timeout: 5000 })
+    const res = await axios.get('/api/lottery/user/records', { timeout: API_TIMEOUT })
     const records = Array.isArray(res.data) ? res.data : []
     if (records.length > 0) {
       noticeList.length = 0
@@ -344,11 +346,11 @@ async function loadNoticeData() {
   }
 }
 
-async function loadPrizesForStrip() {
+async function loadPrizesForStrip(retryCount = 0) {
   try {
     // 添加时间戳防止缓存
     const res = await axios.get('/api/lottery/config', { 
-      timeout: 8000,
+      timeout: API_TIMEOUT,
       params: { _t: Date.now() }
     })
     
@@ -401,7 +403,11 @@ async function loadPrizesForStrip() {
     newItems.forEach(p => prizeStripItems.push(p))
     
   } catch(e) {
-    console.error('奖品轮播加载失败:', e.message)
+    console.error(`奖品轮播加载失败(${retryCount + 1}/${MAX_RETRIES}):`, e.message)
+    // 自动重试
+    if (retryCount < MAX_RETRIES - 1) {
+      setTimeout(() => loadPrizesForStrip(retryCount + 1), 2000)
+    }
   }
 }
 
@@ -428,7 +434,7 @@ function switchTab(index) {
 
 async function loadConfig() {
   try {
-    const res = await axios.get('/api/lottery/config', { timeout: 5000 })
+    const res = await axios.get('/api/lottery/config', { timeout: API_TIMEOUT })
 
     // 解析 custom_form_fields 配置（管理员后台可编辑）
     const optsRaw = res.data?.custom_form_fields?.value || res.data?.custom_form_fields
@@ -515,7 +521,7 @@ async function handleDraw() {
   // 获取结果
   const catKey = categories[activeTab.value]?.key || 'bowen'
   try {
-    const res = await axios.post('/api/lottery/draw', { category: catKey }, { timeout: 8000 })
+    const res = await axios.post('/api/lottery/draw', { category: catKey }, { timeout: API_TIMEOUT })
     if (res.data.success) {
       prize.value = res.data.prize
       prize.value._category = res.data.category
@@ -563,7 +569,7 @@ async function openBag() {
   bagLoading.value = true
   bagRecords.length = 0
   try {
-    const res = await axios.get('/api/lottery/user/records', { timeout: 8000 })
+    const res = await axios.get('/api/lottery/user/records', { timeout: API_TIMEOUT })
     const list = Array.isArray(res.data) ? res.data : (res.data?.records || [])
     list.forEach(r => {
       bagRecords.push({
@@ -584,7 +590,7 @@ async function openBag() {
 
 async function loadBagCount() {
   try {
-    const res = await axios.get('/api/lottery/user/records', { timeout: 5000 })
+    const res = await axios.get('/api/lottery/user/records', { timeout: API_TIMEOUT })
     const list = Array.isArray(res.data) ? res.data : (res.data?.records || [])
     bagCount.value = list.length
   } catch(e) {}
