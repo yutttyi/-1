@@ -36,7 +36,7 @@ jobs:
       - name: Build frontend
         env:
           GITHUB_PAGES: true
-          API_URL: ${{ vars.API_URL || 'https://-1-production.up.railway.app' }}
+          API_URL: ${{ vars.API_URL || 'https://1-production-6ba3.up.railway.app' }}
         run: npm run build
 
       - name: Upload artifact
