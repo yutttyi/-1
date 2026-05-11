@@ -1,5 +1,5 @@
 const axios = require('axios');
-const API = 'http://localhost:3000';
+const API = 'https://1-production-6ba3.up.railway.app';
 
 (async () => {
   try {

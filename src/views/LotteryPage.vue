@@ -149,8 +149,7 @@
       <div class="prize-bar-title">🎁 奖品池 <span class="blink-arrow">▶</span></div>
       <div class="prize-scroll-track">
         <div class="prize-scroll-list">
-          <!-- 渲染两份实现无缝滚动 -->
-          <template v-for="(item, i) in [...prizeStripItems, ...prizeStripItems]" :key="'px'+i">
+          <template v-for="(item, i) in prizeStripItems" :key="'px'+i">
             <div class="prize-item-pixel">
               <div class="prize-img-box">
                 <img v-if="item.image" :src="item.image" :alt="item.name" />
@@ -1004,12 +1003,12 @@ onMounted(async () => {
   display: flex;
   gap: 25px;
   padding-left: 25px;
-  animation: marqueeScroll 25s linear infinite;
+  animation: marqueeScroll 15s linear infinite alternate;
   white-space: nowrap;
 }
 @keyframes marqueeScroll {
   0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  100% { transform: translateX(-30%); }
 }
 
 .prize-item-pixel {
