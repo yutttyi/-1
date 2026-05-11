@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐧 Mario Penguin - 像素风企鹅</title>
+<style>
+:root{
+  --px-black:#1a1a2e;
+  --px-white:#ffffff;
+  --px-gold:#FFD700;
+  --px-blush:#F5DEB3;
+  --px-bg:#f0f4f8;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{min-height:100vh;background:var(--px-bg);display:flex;flex-direction:column;align-items:center;padding:30px 16px;font-family:'Courier New',monospace;}
+
+h1{font-size:22px;font-weight:900;color:var(--px-black);letter-spacing:3px;margin-bottom:6px;}
+.sub{font-size:11px;color:#999;letter-spacing:2px;margin-bottom:24px;}
+
+.canvas-wrap{position:relative;display:inline-block;border:3px solid var(--px-black);box-shadow:6px 6px 0 rgba(0,0,0,.12);background:#fafafa;padding:8px;}
+.pixel-canvas{display:flex;flex-direction:column;gap:0;line-height:0;font-size:0;}
+.p-row{display:flex;gap:0;}
+.px{width:12px;height:12px;display:inline-block;}
+.px-b{background:var(--px-black);}
+.px-w{background:var(--px-white);}
+.px-g{background:var(--px-gold);}
+.px-l{background:var(--px-blush);}
+.px-e{background:transparent;}
+
+.canvas-wrap.bounce .pixel-canvas{animation:bounce .5s ease-in-out infinite alternate;}
+@keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-10px);}}
+.canvas-wrap.spin .pixel-canvas{animation:spin .55s ease-in-out;}
+@keyframes spin{from{transform:rotate(0) scale(1);}50%{transform:rotate(180deg) scale(.88);}to{transform:rotate(360deg) scale(1);}}
+
+.thumbs{display:flex;gap:20px;margin-top:28px;flex-wrap:wrap;justify-content:center;}
+.thumb-item{text-align:center;}
+.thumb-label{font-size:9px;color:#999;letter-spacing:1px;margin-top:6px;font-weight:700;}
+.thumb{border:2px solid var(--px-black);padding:3px;background:#fff;cursor:pointer;transition:transform .15s;}
+.thumb:hover{transform:scale(1.15) rotate(-3deg);}
+.thumb .px{width:6px;height:6px;}
+.thumb.hop .pixel-canvas{animation:bounce .35s ease-in-out infinite alternate;}
+.thumb.wave .pixel-canvas{animation:wobble .4s ease-in-out infinite alternate;transform-origin:center bottom;}
+@keyframes wobble{from{transform:rotate(-5deg);}to{transform:rotate(5deg);}}
+.thumb.sad .pixel-canvas{animation:squish 1.2s ease-in-out infinite;}
+@keyframes squish{0%,100%{transform:scaleY(1);}50%{transform:scaleY(.92) scaleX(1.04);}}
+.thumb.walk .pixel-canvas{animation:walkWaddle .45s ease-in-out infinite;}
+@keyframes walkWaddle{0%,100%{transform:rotate(-4deg) translateX(-2px);}50%{transform:rotate(4deg) translateX(2px);}}
+
+.controls{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap;justify-content:center;}
+.btn{
+  font-family:'Courier New',monospace;font-weight:900;font-size:12px;letter-spacing:1px;
+  padding:8px 20px;border:none;cursor:pointer;color:#fff;
+  box-shadow:3px 3px 0 rgba(0,0,0,.18);transition:all .1s;
+}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 rgba(0,0,0,.2);}
+.btn:active{transform:translate(1px,1px);box-shadow:2px 2px 0 rgba(0,0,0,.18);}
+.btn-bk{background:var(--px-black);}
+.btn-gd{background:#e6a800;color:var(--px-black);}
+
+.info-bar{margin-top:20px;display:flex;gap:14px;font-size:11px;color:#666;flex-wrap:wrap;justify-content:center;}
+.info-badge{background:#eee;padding:4px 10px;border-radius:4px;font-weight:700;}
+
+footer{margin-top:28px;font-size:10px;color:#bbb;letter-spacing:1px;}
+</style>
+</head>
+
+<body>
+
+<h1>🐧 MARIO PENGUIN</h1>
+<p class="sub">SUPER MARIO PIXEL STYLE</p>
+
+<div class="canvas-wrap" id="mainCanvas" onclick="onMainClick()">
+  <div class="pixel-canvas" id="canvas"></div>
+</div>
+
+<div class="controls">
+  <button class="btn btn-bk" id="btnBounce" onclick="toggleBounce()">BOUNCE</button>
+  <button class="btn btn-bk" onclick="doSpin()">🔄 SPIN</button>
+  <button class="btn btn-gd" onclick="doFlip()">↔️ FLIP</button>
+</div>
+
+<div class="thumbs">
+  <div class="thumb-item"><div class="thumb"><div class="pixel-canvas"></div></div><div class="thumb-label">IDLE</div></div>
+  <div class="thumb-item"><div class="thumb hop"><div class="pixel-canvas"></div></div><div class="thumb-label">HOP</div></div>
+  <div class="thumb-item"><div class="thumb wave"><div class="pixel-canvas"></div></div><div class="thumb-label">WAVE</div></div>
+  <div class="thumb-item"><div class="thumb sad"><div class="pixel-canvas"></div></div><div class="thumb-label">SAD</div></div>
+  <div class="thumb-item"><div class="thumb walk"><div class="pixel-canvas"></div></div><div class="thumb-label">WALK</div></div>
+</div>
+
+<div class="info-bar">
+  <span class="info-badge" id="infoBounce">BOUNCE: OFF</span>
+  <span class="info-badge" id="infoSpin">SPINS: 0</span>
+  <span class="info-badge" id="infoClicks">CLICKS: 0</span>
+</div>
+
+<footer>PIXEL PENGUIN · MARIO STYLE · 单文件运行</footer>
+
+<script>
+// ══════════════════════════════════════
+//  精确像素数据 - 逐行对照原图 (26×31)
+//  b=黑 w=白 g=金黄 l=腮红 .=空
+// ══════════════════════════════════════
+const PX = [
+//     0         1         2
+//     01234567890123456789012345
+'..........bbbbbbbbbb......', // 0  头顶开始
+'.........bbbbbbbbbbb.....', // 1
+'.......bbbbwwwbbbbbb....', // 2  白脸区开始
+'......bwwwwlwlwbbbbb....', // 3  腮红+眼
+'.....bwwwwwwwwbbbbb.....', // 4  白脸扩展
+'......bwgwbbbbbbb......', // 5  黄嘴上
+'.......bggb...........', // 6  黄嘴下
+'........bbbbb.........',   // 7  下巴黑
+'.......bbbbbb.........',   // 8
+'......bbbbbbb.........',   // 9  脖子收窄
+'...bbbbbbbbbb.........',    // 10 肩膀展开
+'..bbbbwwwwbbbb........',   // 11 白肚皮开始+翅膀
+'.bbbwwwwwwwwbb........',   // 12
+'b.bwwwwwwwwwww........',   // 13 大白肚
+'bbbbwwwwwwwwwwb........',   // 14 最宽处
+'bbbbwwwwwwwwwwb........',   // 15
+'bbbbwwwwwwwwwwb........',   // 16
+'bbbbwwwwwwwwwww........',   // 17
+'...bwwwwwwwww.........',    // 18 收窄
+'....bbbbbbb..........',     // 19 底部
+'......bb.bb..........',     // 20 两腿间
+'.....bgg..ggb.........',    // 21 黄脚
+'...bggggggggggb.......',    // 22 脚掌宽
+'..bggggggggggggb......',    // 23
+'..bggggggggggggb......',    // 24
+'...bggg..gggb.........',    // 25 脚趾
+'......................',    // 26
+'......................',    // 27
+'......................',    // 28
+'......................',    // 29
+'......................',    // 30
+];
+
+let isBouncing=false, spinCount=0, clickCount=0;
+
+function renderCanvas(selector){
+  document.querySelectorAll(selector).forEach(el=>{
+    let h='';
+    PX.forEach(row=>{
+      h+='<div class="p-row">';
+      for(let i=0;i<row.length;i++){
+        const c=row[i];
+        h+=`<span class="px px-${c}"></span>`;
+      }
+      h+='</div>';
+    });
+    el.innerHTML=h;
+  });
+}
+
+renderCanvas('.pixel-canvas');
+
+function toggleBounce(){
+  isBouncing=!isBouncing;
+  document.getElementById('mainCanvas').classList.toggle('bounce',isBouncing);
+  document.getElementById('btnBounce').textContent=isBouncing?'STOP':'BOUNCE';
+  document.getElementById('infoBounce').textContent='BOUNCE: '+(isBouncing?'ON':'OFF');
+  clickCount++; updateInfo();
+}
+function doSpin(){
+  const el=document.getElementById('mainCanvas');
+  el.classList.remove('spin');void el.offsetWidth;
+  el.classList.add('spin');
+  setTimeout(()=>el.classList.remove('spin'),550);
+  spinCount++; clickCount++; updateInfo();
+}
+function doFlip(){
+  const c=document.getElementById('canvas');
+  c.style.transform=c.style.transform===''?'scaleX(-1)':'';
+  clickCount++; updateInfo();
+}
+function onMainClick(){ clickCount++; updateInfo(); }
+function updateInfo(){
+  document.getElementById('infoSpin').textContent='SPINS: '+spinCount;
+  document.getElementById('infoClicks').textContent='CLICKS: '+clickCount;
+}
+</script>
+</body>
+</html>

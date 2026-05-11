@@ -144,32 +144,21 @@
       </button>
     </div>
 
-    <!-- ═══ 底部奖品轮播横幅（像素街机风） ═══ -->
-    <div v-if="!prize && !showNoAccess && prizeStripItems.length && step === 'idle'" class="pixel-prize-bar">
-      <div class="prize-bar-title">🎁 奖品池 <span class="blink-arrow">▶</span></div>
-      <div class="prize-scroll-track">
-        <div class="prize-scroll-list">
-          <!-- 渲染两份实现无缝滚动 -->
-          <template v-for="(item, i) in [...prizeStripItems, ...prizeStripItems]" :key="'px'+i">
-            <div class="prize-item-pixel">
-              <div class="prize-img-box">
-                <img v-if="item.image" :src="item.image" :alt="item.name" />
-                <span v-else>{{ item.name?.charAt(0) || '?' }}</span>
-              </div>
-              <span class="prize-name">{{ item.name }}</span>
-            </div>
-          </template>
+    <!-- ═══ 底部奖品轮播条 ═══ -->
+    <div v-if="!prize && !showNoAccess && prizeStripItems.length && step === 'idle'" class="ticker-wrap">
+      <div class="strip-label">奖品池</div>
+      <div class="strip-track" :class="{ paused: stripPaused }"
+           @mouseenter="stripPaused = true" @mouseleave="stripPaused = false">
+        <div v-for="(item, i) in prizeStripItems" :key="'ps'+i" class="strip-card">
+          <img v-if="item.image" :src="item.image" :alt="item.name" class="strip-card-img" />
+          <div v-else class="strip-card-img strip-no-img">{{ item.name?.charAt(0) || '?' }}</div>
+          <div v-if="item.name" class="strip-card-name">{{ item.name }}</div>
         </div>
       </div>
     </div>
     <!-- 兜底跑马灯（无奖品数据时） -->
-    <div v-if="!prizeStripItems.length && !prize" class="pixel-prize-bar">
-      <div class="prize-bar-title">📢 公告</div>
-      <div class="prize-scroll-track">
-        <div class="prize-scroll-list" style="padding-left:15px;">
-          <span style="color:var(--px-yellow);font-size:13px;font-weight:bold;">{{ tickerText }}</span>
-        </div>
-      </div>
+    <div v-if="!prizeStripItems.length && !prize" class="ticker-wrap-simple">
+      <div class="ticker">{{ tickerText }}</div>
     </div>
 
     <!-- ═══ 规则弹窗 ═══ -->
@@ -954,101 +943,38 @@ onMounted(async () => {
 .action-btn:active{transform:scale(.97);box-shadow:2px 2px 0 var(--px-black)}
 .act-icon{font-size:18px;line-height:1}.act-text{font-weight:bold}
 
-/* ═══ 底部奖品轮播横幅（像素街机风） ═══ */
-.pixel-prize-bar {
-  position: fixed;
-  bottom: 0; left: 0;
-  width: 100%;
-  height: 70px;
-  background: var(--px-white, #fff);
-  border-top: 8px solid var(--px-black, #000);
-  display: flex;
-  z-index: 50;
-  overflow: hidden;
+/* ═══ 底部奖品轮播 ═══ */
+.ticker-wrap{
+  position:fixed;bottom:0;left:0;width:100%;
+  background:var(--px-black);border-top:6px solid var(--px-white);
+  color:var(--px-yellow);padding:10px;z-index:10;display:flex;align-items:center;overflow:hidden
 }
+.strip-label{
+  writing-mode:vertical-lr;text-orientation:upright;
+  font-size:8px;font-weight:bold;color:var(--px-dark-yellow);
+  letter-spacing:1px;margin-right:10px;flex-shrink:0;padding-top:4px;text-transform:uppercase
+}
+.strip-track{display:flex;gap:12px;animation:stripScroll 20s linear infinite;will-change:transform}
+.strip-track.paused{animation-play-state:paused}
+.strip-card{flex-shrink:0;width:68px;display:flex;flex-direction:column;align-items:center;gap:3px}
+.strip-card-img{
+  width:58px;height:58px;border-radius:4px;background:#333;border:2px solid #666;
+  object-fit:cover;box-sizing:border-box
+}
+.strip-card-img.strip-no-img{
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;font-weight:bold;color:#888
+}
+.strip-card-name{font-size:7px;color:var(--px-light-yellow);text-align:center;white-space:nowrap;max-width:68px;text-overflow:ellipsis;overflow:hidden}
+@keyframes stripScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
-.prize-bar-title {
-  background: var(--px-red, #f43f5e);
-  color: var(--px-white, #fff);
-  font-size: 16px;
-  font-weight: bold;
-  padding: 0 25px;
-  border-right: 6px solid var(--px-black, #000);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  letter-spacing: 2px;
-  z-index: 2;
-  position: relative;
-  box-shadow: 6px 0 0 rgba(0,0,0,0.15);
-  white-space: nowrap;
+.ticker-wrap-simple{
+  position:fixed;bottom:0;left:0;width:100%;
+  background:var(--px-black);border-top:6px solid var(--px-white);
+  color:var(--px-yellow);padding:12px;z-index:10;overflow:hidden
 }
-
-.blink-arrow {
-  color: var(--px-yellow, #ffd700);
-  animation: blink 1s infinite steps(2);
-}
-@keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
-
-.prize-scroll-track {
-  flex: 1;
-  background: var(--px-black, #000);
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  position: relative;
-}
-.prize-scroll-track:hover .prize-scroll-list { animation-play-state: paused; cursor: pointer; }
-
-.prize-scroll-list {
-  display: flex;
-  gap: 25px;
-  padding-left: 25px;
-  animation: marqueeScroll 25s linear infinite;
-  white-space: nowrap;
-}
-@keyframes marqueeScroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-.prize-item-pixel {
-  background: var(--px-white, #fff);
-  border: 4px solid var(--px-black, #000);
-  height: 46px;
-  display: flex;
-  align-items: center;
-  padding: 4px 15px 4px 4px;
-  gap: 10px;
-  box-shadow: 4px 4px 0 var(--px-yellow, #ffd700);
-  transition: transform 0.1s;
-  flex-shrink: 0;
-}
-.prize-item-pixel:hover { transform: translateY(-2px); }
-.prize-item-pixel.tier-epic { box-shadow: 4px 4px 0 #9333ea; }
-.prize-item-pixel.tier-rare { box-shadow: 4px 4px 0 var(--px-blue, #4facfe); }
-
-.prize-img-box {
-  width: 30px; height: 30px;
-  background: #f0f0f0;
-  border: 2px solid var(--px-black, #000);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  font-size:14px;font-weight:bold;color:#888
-}
-.prize-img-box img {
-  width:100%;height:100%;object-fit:contain;
-  image-rendering: pixelated;
-}
-
-.prize-name {
-  font-size: 14px;
-  font-weight: bold;
-  color: var(--px-black, #000);
-  white-space:nowrap
-}
+.ticker{display:inline-block;white-space:nowrap;animation:ticker 25s linear infinite;font-size:10px}
+@keyframes ticker{from{transform:translateX(100vw)}to{transform:translateX(-100%)}}
 
 /* ═══ 弹窗遮罩 ═══ */
 .modal-overlay{
