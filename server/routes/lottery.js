@@ -33,6 +33,13 @@ router.post('/upload', (req, res) => {
 
 // 获取页面配置（支持分类）
 router.get('/config', (req, res) => {
+  // 禁止缓存，确保前端实时获取最新数据
+  res.set({
+    'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+    'Pragma': 'no-cache',
+    'Expires': '0'
+  })
+  
   const db = getDB();
   let configs;
   try {

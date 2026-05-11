@@ -267,6 +267,10 @@ const noticeList = reactive([])
 const prizeStripItems = reactive([])
 const stripPaused = ref(false)
 
+// 自动刷新定时器
+let prizeRefreshTimer = null
+const PRIZE_REFRESH_INTERVAL = 15000 // 每15秒自动刷新奖品数据
+
 // 跑马灯文本
 const tickerText = ref('🚀 云端挑战已开启！恭喜 AICODING_VIP 获得传说级大奖！ 🚀 不要停下来，大奖在向你招手！ 🚀')
 
@@ -342,21 +346,45 @@ async function loadNoticeData() {
 
 async function loadPrizesForStrip() {
   try {
-    const res = await axios.get('/api/lottery/config', { timeout: 5000 })
+    // 添加时间戳防止缓存
+    const res = await axios.get('/api/lottery/config', { 
+      timeout: 5000,
+      params: { _t: Date.now() }
+    })
     const catKey = categories[activeTab.value]?.key || 'bowen'
     const prizesByCat = res.data?._prizesByCategory || {}
     const prizes = prizesByCat[catKey] || []
     const allPrizes = res.data?._prizes || []
     const finalPrizes = prizes.length > 0 ? prizes : allPrizes
 
-    prizeStripItems.length = 0
-    if (Array.isArray(finalPrizes)) {
-      finalPrizes.forEach(p => {
-        prizeStripItems.push({ id: p.id, name: p.name, image: p.image || '' })
-      })
+    // 对比数据是否变化，避免不必要的DOM更新
+    const newItems = (Array.isArray(finalPrizes) ? finalPrizes : []).map(p => ({
+      id: p.id, name: p.name, image: p.image || ''
+    }))
+    
+    // 检查是否有变化（长度或内容）
+    if (newItems.length !== prizeStripItems.length || 
+        newItems.some((item, i) => item.id !== prizeStripItems[i]?.id || item.name !== prizeStripItems[i]?.name)) {
+      prizeStripItems.length = 0
+      newItems.forEach(p => prizeStripItems.push(p))
     }
   } catch(e) {
     console.log('奖品轮播加载失败:', e.message)
+  }
+}
+
+// 启动自动刷新定时器
+function startPrizeAutoRefresh() {
+  stopPrizeAutoRefresh()
+  prizeRefreshTimer = setInterval(() => {
+    loadPrizesForStrip()
+  }, PRIZE_REFRESH_INTERVAL)
+}
+
+function stopPrizeAutoRefresh() {
+  if (prizeRefreshTimer) {
+    clearInterval(prizeRefreshTimer)
+    prizeRefreshTimer = null
   }
 }
 
@@ -550,6 +578,8 @@ function playBgsound() {
 
 onMounted(async () => {
   await Promise.all([loadNoticeData(), loadPrizesForStrip(), loadConfig(), loadBagCount()])
+  // 启动奖品数据自动刷新
+  startPrizeAutoRefresh()
   // 尝试静音自动播放，用户交互后恢复音量
   if (bgsound.value) {
     bgsound.value.volume = 0.3
@@ -563,6 +593,7 @@ onMounted(async () => {
 onUnmounted(() => {
   document.removeEventListener('click', playBgsound)
   document.removeEventListener('touchstart', playBgsound)
+  stopPrizeAutoRefresh()
 })
 </script>
 
