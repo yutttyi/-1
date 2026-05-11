@@ -351,11 +351,32 @@ async function loadPrizesForStrip() {
       timeout: 5000,
       params: { _t: Date.now() }
     })
+    
+    let finalPrizes = []
+    const data = res.data || {}
+    
+    // 策略1: 按当前tab的分类获取
     const catKey = categories[activeTab.value]?.key || 'bowen'
-    const prizesByCat = res.data?._prizesByCategory || {}
-    const prizes = prizesByCat[catKey] || []
-    const allPrizes = res.data?._prizes || []
-    const finalPrizes = prizes.length > 0 ? prizes : allPrizes
+    const prizesByCat = data._prizesByCategory || {}
+    
+    if (prizesByCat[catKey]?.length > 0) {
+      finalPrizes = prizesByCat[catKey]
+    } 
+    // 策略2: 遍历所有分类，取第一个有数据的
+    else if (Object.keys(prizesByCat).length > 0) {
+      for (const key of Object.keys(prizesByCat)) {
+        if (prizesByCat[key]?.length > 0) {
+          finalPrizes = prizesByCat[key]
+          break
+        }
+      }
+    }
+    // 策略3: 使用全量奖品列表
+    if (finalPrizes.length === 0 && Array.isArray(data._prizes)) {
+      finalPrizes = data._prizes
+    }
+
+    console.log('[奖品轮播] 分类:', catKey, '获取到:', finalPrizes.length, '个奖品', JSON.stringify(finalPrizes.slice(0,2)))
 
     // 对比数据是否变化，避免不必要的DOM更新
     const newItems = (Array.isArray(finalPrizes) ? finalPrizes : []).map(p => ({
