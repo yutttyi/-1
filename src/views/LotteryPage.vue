@@ -146,7 +146,8 @@
 
     <!-- ═══ 底部奖品轮播横幅（像素街机风） ═══ -->
     <div v-if="!prize && !showNoAccess && prizeStripItems.length && step === 'idle'" class="pixel-prize-bar">
-      <div class="prize-bar-title">🎁 奖品池 <span class="blink-arrow">▶</span></div>
+      <div class="prize-bar-title">🎁 奖品池</div>
+      <div class="blink-arrow">▶</div>
       <div class="prize-scroll-track">
         <div class="prize-scroll-list">
           <template v-for="(item, i) in prizeStripItems" :key="'px'+i">
@@ -988,6 +989,9 @@ onMounted(async () => {
 .blink-arrow {
   color: var(--px-yellow, #ffd700);
   animation: blink 1s infinite steps(2);
+  font-size: 14px;
+  margin-left: 4px;
+  flex-shrink: 0;
 }
 @keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
 
