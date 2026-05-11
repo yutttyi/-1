@@ -971,11 +971,13 @@ onMounted(async () => {
   color: var(--px-white, #fff);
   font-size: 16px;
   font-weight: bold;
-  padding: 0 25px;
+  width: 100px;
   border-right: 6px solid var(--px-black, #000);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 0;
   letter-spacing: 2px;
   z-index: 2;
   position: relative;
