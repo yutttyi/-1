@@ -605,13 +605,13 @@ onUnmounted(() => {
   display: inline-block;
   background: var(--px-red, #f43f5e);
   color: #fff;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: bold;
   letter-spacing: 2px;
-  padding: 8px 20px;
-  border: 4px solid #000;
-  box-shadow: 6px 6px 0 #000;
-  margin-bottom: 20px;
+  padding: 5px 16px;
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0 #000;
+  margin-bottom: 15px;
   transform: rotate(-3deg);
 }
 
