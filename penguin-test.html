@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐧 PENGUIN TEST - 像素风黑白企鹅</title>
+<style>
+/* ═══ 全局变量 ═══ */
+:root {
+  --px-bg: #e8f4fc;
+  --px-black: #1a1a2e;
+  --px-white: #ffffff;
+  --px-gray: #888888;
+  --px-light-gray: #cccccc;
+  --px-accent: #ffd700;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  min-height: 100vh;
+  background: var(--px-bg);
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(79,172,254,0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255,215,0,0.06) 0%, transparent 50%);
+  font-family: 'Courier New', monospace;
+  padding: 20px;
+}
+
+/* 像素边框 */
+.pixel-border {
+  max-width: 800px;
+  margin: 0 auto;
+  border: 4px solid var(--px-black);
+  box-shadow: 8px 8px 0 var(--px-black), inset 0 0 0 2px var(--px-white);
+  background: var(--px-white);
+  padding: 24px;
+}
+
+/* 标题 */
+.test-header {
+  text-align: center;
+  margin-bottom: 30px;
+  border-bottom: 3px dashed var(--px-black);
+  padding-bottom: 16px;
+}
+.pixel-title {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--px-black);
+  letter-spacing: 4px;
+}
+.subtitle {
+  font-size: 12px;
+  color: var(--px-gray);
+  letter-spacing: 3px;
+}
+
+/* ====== 大企鹅 ====== */
+.showcase { display:flex; flex-direction:column; align-items:center; gap:30px; }
+.penguin-stage { text-align:center; }
+.stage-label {
+  font-size:11px; color:var(--px-gray); letter-spacing:2px; margin-bottom:12px;
+}
+.penguin { position:relative; cursor:pointer; user-select:none; transition:transform .3s; }
+.penguin:hover { transform:scale(1.05); }
+
+.penguin-large { width:140px; height:180px; margin:0 auto; }
+
+/* 身体 */
+.pg-body {
+  width:140px; height:180px;
+  background:var(--px-black);
+  border-radius:70% 70% 60% 60% / 60% 60% 40% 40%;
+  position:relative; z-index:2;
+  box-shadow:4px 4px 0 rgba(0,0,0,.15);
+}
+.pg-belly {
+  position:absolute; top:45%; left:15%;
+  width:70%; height:50%;
+  background:var(--px-white);
+  border-radius:50% 50% 45% 45% / 55% 55% 40% 40%;
+}
+.pg-eyes {
+  position:absolute; top:28%; left:50%; transform:translateX(-50%);
+  display:flex; gap:22px;
+}
+.pg-eye {
+  width:26px; height:28px;
+  background:var(--px-white); border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  border:2px solid var(--px-black);
+}
+.pg-pupil {
+  width:14px; height:14px; background:var(--px-black); border-radius:50%;
+  animation:blink 3s infinite;
+}
+@keyframes blink{ 0%,95%,100%{ transform:scaleY(1);} 97%{ transform:scaleY(.1);} }
+
+.pg-beak {
+  position:absolute; top:48%; left:50%; transform:translateX(-50%);
+  width:0; height:0;
+  border-left:12px solid transparent; border-right:12px solid transparent;
+  border-top:14px solid var(--px-light-gray);
+}
+.pg-blush {
+  position:absolute; top:42%; width:18px; height:10px;
+  background:rgba(0,0,0,.08); border-radius:50%;
+}
+.pg-blush-left{ left:8%; } .pg-blush-right{ right:8%; }
+
+/* 翅膀 */
+.pg-wing{
+  position:absolute; top:50%; width:28px; height:55px;
+  background:var(--px-black); border-radius:40%; z-index:1; transition:transform .3s;
+}
+.pg-wing-left{ left:-12px; transform-origin:top right; }
+.pg-wing-right{ right:-12px; transform-origin:top left; }
+.penguin:hover .pg-wing-left{ transform:rotate(-20deg); }
+.penguin:hover .pg-wing-right{ transform:rotate(20deg); }
+
+/* 脚 */
+.pg-foot{
+  position:absolute; bottom:-5px; width:34px; height:14px;
+  background:var(--px-light-gray); border-radius:50%; z-index:3;
+}
+.pg-foot-left{ left:18px; } .pg-foot-right{ right:18px; }
+
+/* 跳动 */
+.penguin.bounce{ animation:pBounce .5s ease-in-out infinite; }
+@keyframes pBounce{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-25px);} }
+.penguin.bounce .pg-wing-left{ animation:wFL .25s ease-in-out infinite alternate; }
+.penguin.bounce .pg-wing-right{ animation:wFR .25s ease-in-out infinite alternate; }
+@keyframes wFL{ from{transform:rotate(-15deg);} to{transform:rotate(-45deg);} }
+@keyframes wFR{ from{transform:rotate(15deg);} to{transform:rotate(45deg);} }
+
+/* ====== 动作展示行 ====== */
+.action-row{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+.action-item{ text-align:center; }
+.action-label{ font-size:10px; color:var(--px-gray); letter-spacing:1px; margin-bottom:8px; }
+
+.p-mini{ width:56px; height:72px; position:relative; cursor:pointer; transition:all .2s; }
+.p-mini:hover{ transform:scale(1.15); }
+.p-body-m{ width:100%; height:100%; background:var(--px-black); border-radius:70% 70% 60% 60%/60% 60% 40% 40%; position:relative; }
+.p-belly-m{
+  position:absolute; top:44%; left:18%; width:64%; height:46%;
+  background:var(--px-white); border-radius:50% 50% 45% 45%/55% 55% 35% 35%;
+}
+.p-eyes-m{ position:absolute; top:26%; left:50%; transform:translateX(-50%); display:flex; gap:8px; }
+.p-eye-d{ width:8px; height:8px; background:var(--px-white); border-radius:50%; box-shadow:inset 2px 2px 0 var(--px-black); }
+.p-beak-m{
+  position:absolute; top:44%; left:50%; transform:translateX(-50%);
+  width:0; height:0; border-left:5px solid transparent; border-right:5px solid transparent; border-top:6px solid var(--px-light-gray);
+}
+.p-wm{ position:absolute; top:48%; width:12px; height:24px; background:var(--px-black); border-radius:40%; z-index:0; }
+.p-wl{ left:-5px; } .p-wr{ right:-5px; }
+
+/* 动画变体 */
+.p-mini.wave .p-wr{ animation:mWv .4s ease-in-out infinite alternate; transform-origin:top left; }
+@keyframes mWv{ from{transform:rotate(10deg);} to{transform:rotate(60deg);} }
+.p-mini.happy .p-body-m{ animation:mHp .35s ease-in-out infinite; }
+@keyframes mHp{ 0%,100%{transform:translateY(0) scale(1);} 50%{transform:translateY(-6px) scale(1.05);} }
+.p-mini.sad .p-body-m{ animation:mSd 1.5s ease-in-out infinite; }
+@keyframes mSd{ 0%,100%{transform:scaleY(1);} 50%{transform:scaleY(.92) scaleX(1.04);} }
+.p-mini.walk .p-body-m{ animation:mWk .4s ease-in-out infinite; }
+@keyframes mWk{ 0%,100%{transform:rotate(-5deg) translateX(-2px);} 50%{transform:rotate(5deg) translateX(2px);} }
+.p-mini.walk .p-wl{ animation:mWL .4s ease-in-out infinite; }
+.p-mini.walk .p-wr{ animation:mWR .4s ease-in-out infinite; }
+@keyframes mWL{ 0%,100%{transform:rotate(20deg);} 50%{transform:rotate(-20deg);} }
+@keyframes mWR{ 0%,100%{transform:rotate(-20deg);} 50%{transform:rotate(20deg);} }
+
+/* ====== 按钮 ====== */
+.controls{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.px-btn{
+  font-family:'Courier New',monospace; font-weight:900; font-size:13px; letter-spacing:1px;
+  padding:10px 24px; background:var(--px-black); color:var(--px-white); border:none;
+  cursor:pointer; box-shadow:4px 4px 0 rgba(0,0,0,.2); transition:all .1s;
+}
+.px-btn:hover{ transform:translate(-1px,-1px); box-shadow:5px 5px 0 rgba(0,0,0,.25); }
+.px-btn:active{ transform:translate(2px,2px); box-shadow:2px 2px 0 rgba(0,0,0,.2); }
+.btn-red{ background:#333; }
+
+/* ====== 网格展示 ====== */
+.grid-section{ margin-top:30px; text-align:center; }
+.section-title{
+  font-size:14px; font-weight:900; color:var(--px-black); letter-spacing:2px;
+  margin:0 0 16px; border-bottom:2px dotted var(--px-black); display:inline-block; padding-bottom:4px;
+}
+.pixel-grid{
+  display:inline-block; border:2px solid var(--px-black); background:var(--px-bg); padding:4px;
+  transition:transform .5s;
+}
+.pixel-grid.flipped{ transform:scaleX(-1); }
+.grid-row{ display:flex; justify-content:center; }
+.grid-cell{
+  width:14px; height:14px; border:.5px solid rgba(0,0,0,.04); transition:all .15s;
+}
+.grid-cell:hover{ outline:2px solid var(--px-accent); z-index:1; transform:scale(1.3); }
+.c-b{ background:var(--px-black); } .c-w{ background:var(--px-white); } .c-g{ background:var(--px-gray); }
+.grid-info{ margin-top:10px; font-size:11px; color:var(--px-gray); }
+
+/* ====== 状态面板 ====== */
+.status-panel{ margin-top:30px; text-align:center; }
+.status-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; max-width:300px; margin:0 auto; }
+.status-item{
+  display:flex; justify-content:space-between; align-items:center; padding:10px 16px;
+  background:#f5f5f5; border:2px solid var(--px-black);
+}
+.status-label{ font-size:11px; font-weight:700; color:var(--px-gray); letter-spacing:1px; }
+.val-on{ color:#22c55e; font-size:12px; font-weight:900; }
+.val-off{ color:#ef4444; font-size:12px; font-weight:900; }
+.val-num{ font-size:18px; font-weight:900; color:var(--px-black); }
+
+/* 底部 */
+.test-footer{
+  margin-top:30px; text-align:center; font-size:11px; color:var(--px-gray);
+  padding-top:16px; border-top:2px dashed var(--px-black); letter-spacing:1px;
+}
+</style>
+</head>
+
+<body>
+<div class="pixel-border">
+
+  <!-- 标题 -->
+  <header class="test-header">
+    <h1 class="pixel-title">🐧 PENGUIN TEST</h1>
+    <span class="subtitle">PIXEL ART - BLACK &amp; WHITE EDITION</span>
+  </header>
+
+  <!-- 展示区 -->
+  <section class="showcase">
+
+    <!-- 大企鹅 -->
+    <div class="penguin-stage">
+      <div class="stage-label">STANDING</div>
+      <div class="penguin penguin-large" id="bigPenguin" onclick="toggleBounce()">
+        <div class="pg-body">
+          <div class="pg-belly"></div>
+          <div class="pg-eyes">
+            <div class="pg-eye"><div class="pg-pupil"></div></div>
+            <div class="pg-eye"><div class="pg-pupil"></div></div>
+          </div>
+          <div class="pg-beak"></div>
+          <div class="pg-blush pg-blush-left"></div>
+          <div class="pg-blush pg-blush-right"></div>
+        </div>
+        <div class="pg-wing pg-wing-left"></div>
+        <div class="pg-wing pg-wing-right"></div>
+        <div class="pg-foot pg-foot-left"></div>
+        <div class="pg-foot pg-foot-right"></div>
+      </div>
+    </div>
+
+    <!-- 动作迷你版 -->
+    <div class="action-row">
+      <div class="action-item"><div class="action-label">IDLE</div><div class="p-mini" onclick="playAction(this,'')"><div class="p-body-m"><div class="p-belly-m"></div><div class="p-eyes-m"><div class="p-eye-d"></div><div class="p-eye-d"></div></div><div class="p-beak-m"></div></div><div class="p-wm p-wl"></div><div class="p-wm p-wr"></div></div></div>
+      <div class="action-item"><div class="action-label">WAVE</div><div class="p-mini wave" onclick="playAction(this,'wave')"><div class="p-body-m"><div class="p-belly-m"></div><div class="p-eyes-m"><div class="p-eye-d"></div><div class="p-eye-d"></div></div><div class="p-beak-m"></div></div><div class="p-wm p-wl"></div><div class="p-wm p-wr"></div></div></div>
+      <div class="action-item"><div class="action-label">HAPPY</div><div class="p-mini happy" onclick="playAction(this,'happy')"><div class="p-body-m"><div class="p-belly-m"></div><div class="p-eyes-m"><div class="p-eye-d"></div><div class="p-eye-d"></div></div><div class="p-beak-m"></div></div><div class="p-wm p-wl"></div><div class="p-wm p-wr"></div></div></div>
+      <div class="action-item"><div class="action-label">SAD</div><div class="p-mini sad" onclick="playAction(this,'sad')"><div class="p-body-m"><div class="p-belly-m"></div><div class="p-eyes-m"><div class="p-eye-d"></div><div class="p-eye-d"></div></div><div class="p-beak-m"></div></div><div class="p-wm p-wl"></div><div class="p-wm p-wr"></div></div></div>
+      <div class="action-item"><div class="action-label">WALK</div><div class="p-mini walk" onclick="playAction(this,'walk')"><div class="p-body-m"><div class="p-belly-m"></div><div class="p-eyes-m"><div class="p-eye-d"></div><div class="p-eye-d"></div></div><div class="p-beak-m"></div></div><div class="p-wm p-wl"></div><div class="p-wm p-wr"></div></div></div>
+    </div>
+
+    <!-- 控制按钮 -->
+    <div class="controls">
+      <button class="px-btn" id="bounceBtn" onclick="toggleBounce()">BOUNCE!</button>
+      <button class="px-btn" onclick="spinPenguin()">🔄 SPIN</button>
+      <button class="px-btn btn-red" onclick="flipPenguin()">↔️ FLIP</button>
+    </div>
+  </section>
+
+  <!-- 像素网格 -->
+  <section class="grid-section">
+    <h2 class="section-title">PIXEL GRID (16×20)</h2>
+    <div class="pixel-grid" id="pixGrid"></div>
+    <div class="grid-info" id="gridInfo"></div>
+  </section>
+
+  <!-- 状态面板 -->
+  <section class="status-panel">
+    <h2 class="section-title">STATUS</h2>
+    <div class="status-grid">
+      <div class="status-item"><span class="status-label">BOUNCE</span><span id="stBounce" class="val-off">OFF</span></div>
+      <div class="status-item"><span class="status-label">FLIP</span><span id="stFlip" class="val-off">NO</span></div>
+      <div class="status-item"><span class="status-label">SPINS</span><span id="stSpins" class="val-num">0</span></div>
+      <div class="status-item"><span class="status-label">CLICKS</span><span id="stClicks" class="val-num">0</span></div>
+    </div>
+  </section>
+
+  <footer class="test-footer">
+    <span>PIXEL PENGUIN v0.1 TEST | 单文件 · 双击即可运行</span>
+  </footer>
+</div>
+
+<script>
+// 状态
+let isBouncing = false, isFlipped = false, spinCount = 0, clickCount = 0;
+
+function toggleBounce() {
+  isBouncing = !isBouncing;
+  const el = document.getElementById('bigPenguin');
+  const btn = document.getElementById('bounceBtn');
+  if(isBouncing){ el.classList.add('bounce'); btn.textContent='STOP BOUNCE'; document.getElementById('stBounce').className='val-on'; document.getElementById('stBounce').textContent='ON'; }
+  else{ el.classList.remove('bounce'); btn.textContent='BOUNCE!'; document.getElementById('stBounce').className='val-off'; document.getElementById('stBounce').textContent='OFF'; }
+  clickCount++; updateStatus();
+}
+
+function spinPenguin() {
+  const el = document.getElementById('bigPenguin');
+  el.style.animation='none';
+  void el.offsetWidth; // reflow
+  el.style.animation='pSpin .6s ease';
+  setTimeout(()=>el.style.animation='', 600);
+  spinCount++;
+  clickCount++; updateStatus();
+}
+
+function flipPenguin() {
+  isFlipped = !isFlipped;
+  document.getElementById('pixGrid').classList.toggle('flipped', isFlipped);
+  document.getElementById('stFlip').className=isFlipped?'val-on':'val-off';
+  document.getElementById('stFlip').textContent=isFlipped?'YES':'NO';
+  clickCount++; updateStatus();
+}
+
+function playAction(el, cls) {
+  // 点击时弹一下反馈
+  el.style.transform='scale(1.3)';
+  setTimeout(()=>el.style.transform='', 150);
+  clickCount++;
+  updateStatus();
+}
+
+function updateStatus() {
+  document.getElementById('stSpins').textContent=spinCount;
+  document.getElementById('stClicks').textContent=clickCount;
+}
+
+// 渲染像素网格
+const pixelArt = [
+  '................',
+  '...bbbbbbbb....',
+  '..bbbbwwbbbb...',
+  '.bbbbwwwwwbbb..',
+  '.bbwwbgwgbwwbb.',
+  '.bbwwgggggwbb..',
+  '..bbbbwbbbb....',
+  '...bbbbbbb.....',
+  '..bbbbbbbbbb...',
+  '.bbbbwwwwbbbb.',
+  '.bwwwgwwwwgwb.',
+  '.bwwwgwwwwgwb.',
+  '.bwwwwwwwwwwb.',
+  '.bwggggggggwb.',
+  '.bwwwwwwwwwwb.',
+  '..bbbbbbbbbb..',
+  '...bg......gb..',
+  '...bgg....ggb..',
+  '...bggg..gggb..',
+  '...............',
+];
+
+(function renderGrid(){
+  const grid=document.getElementById('pixGrid');
+  const info=document.getElementById('gridInfo');
+  let html='';
+  pixelArt.forEach((row,y)=>{
+    html+='<div class="grid-row">';
+    for(let x=0;x<row.length;x++){
+      const c=row[x];
+      html+=`<div class="grid-cell c-${c}" onmouseenter="showCell(${x},${y},'${c}')"></div>`;
+    }
+    html+='</div>';
+  });
+  grid.innerHTML=html;
+
+  // 添加旋转动画样式
+  const style=document.createElement('style');
+  style.textContent=`@keyframes pSpin{ from{transform:rotate(0) scale(1);} 50%{transform:rotate(180deg) scale(.85);} to{transform:rotate(360deg) scale(1);} }`;
+  document.head.appendChild(style);
+})();
+
+window.showCell=function(x,y,c){
+  const names={b:'BLACK',w:'WHITE',g:'GRAY','.':'EMPTY'};
+  document.getElementById('gridInfo').textContent=`[${x}, ${y}] = ${names[c]||'UNKNOWN'}`;
+};
+</script>
+</body>
+</html>
