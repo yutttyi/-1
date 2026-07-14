@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>部门培训平台调研反馈与优化建议</title>
+<style>
+  :root{
+    --brand:#0052D9;--brand2:#3D5AFE;--accent:#FF8800;
+    --bg:#F5F7FA;--card:#FFFFFF;--ink:#1F2329;--sub:#646A73;
+    --line:#E7EBF0;--soft:#ECF2FE;
+    --ok:#1FA463;--mid:#C8820A;--low:#8A94A6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;padding-bottom:60px;}
+  .banner{background:linear-gradient(120deg,#0052D9,#3D5AFE 60%,#6E4BFF);color:#fff;padding:40px 48px 34px;position:relative;overflow:hidden;}
+  .banner:after{content:"";position:absolute;right:-50px;top:-50px;width:220px;height:220px;background:radial-gradient(circle,rgba(255,136,0,.35),transparent 70%);}
+  .banner .tag{display:inline-block;background:rgba(255,255,255,.16);padding:4px 12px;border-radius:20px;font-size:13px;}
+  .banner h1{font-size:27px;margin:12px 0 6px;font-weight:700;}
+  .banner p{opacity:.9;font-size:14px;}
+  .banner .meta{margin-top:12px;font-size:13px;opacity:.85;}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 28px;}
+  section{margin-top:32px;}
+  .sec-title{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700;margin-bottom:14px;}
+  .sec-title .bar{width:5px;height:22px;background:var(--brand);border-radius:3px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:0 4px 14px rgba(20,40,90,.05);}
+  .grid{display:grid;gap:14px;}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  .g2{grid-template-columns:repeat(2,1fr);}
+  .callout{background:#FFF3E8;border:1px solid #FFD8A8;border-radius:12px;padding:14px 18px;font-size:14px;color:#7A4B00;margin-top:14px;}
+  .callout.blue{background:var(--soft);border-color:#B9D2FF;color:#1A3A8F;}
+  .quote{border-left:4px solid var(--brand);background:#FAFBFE;padding:10px 14px;border-radius:0 10px 10px 0;margin:10px 0;font-size:14px;}
+  .quote .who{font-weight:700;color:var(--brand);font-size:13px;margin-bottom:2px;}
+  .quote .who span{font-weight:400;color:var(--sub);}
+  .badge{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:20px;vertical-align:middle;}
+  .b-ok{background:#E6F6EE;color:var(--ok);}
+  .b-mid{background:#FCF3E0;color:var(--mid);}
+  .b-low{background:#EEF1F5;color:var(--low);}
+  .find{padding-left:50px;position:relative;margin:14px 0;}
+  .find .no{position:absolute;left:0;top:0;width:38px;height:38px;border-radius:10px;background:var(--soft);color:var(--brand);font-weight:800;display:flex;align-items:center;justify-content:center;}
+  .find h4{font-size:15px;margin-bottom:3px;}
+  .find p{color:var(--sub);font-size:13px;}
+  .prio{display:inline-flex;width:30px;height:30px;border-radius:8px;color:#fff;align-items:center;justify-content:center;font-weight:800;font-size:14px;margin-right:10px;}
+  .p0{background:#E34D59;}
+  .p1{background:var(--brand);}
+  ul.cl{list-style:none;}
+  ul.cl li{padding:11px 0 11px 4px;border-bottom:1px dashed var(--line);font-size:14px;}
+  ul.cl li:last-child{border-bottom:none;}
+  .foot{text-align:center;color:var(--sub);font-size:12px;margin-top:38px;}
+  .sm{font-size:13px;color:var(--sub);}
+  @media(max-width:780px){.g3,.g2{grid-template-columns:1fr;}.banner{padding:30px 20px;}}
+</style>
+</head>
+<body>
+  <div class="banner">
+    <span class="tag">部门培训平台 · 调研反馈与优化建议</span>
+    <h1>博闻多识·一堂课 &amp; AISee 实战沙龙</h1>
+    <p>调研反馈汇总 + 清晰结论 + 分层落地建议</p>
+    <div class="meta">汇报日期：2026-07-14 ｜ 回收 14 份，有效反馈 9 人</div>
+  </div>
+
+  <div class="wrap">
+    <!-- 执行摘要 -->
+    <section>
+      <div class="sec-title"><span class="bar"></span>执行摘要（一页纸 · 领导先看这里）</div>
+      <div class="card" style="background:linear-gradient(120deg,#ECF2FE,#F5F0FF);border-color:#B9D2FF;">
+        <p style="font-weight:700;margin-bottom:8px;color:var(--brand);">三句话看懂：</p>
+        <ul class="cl" style="margin-bottom:6px;">
+          <li>技术同学爱"AI 实战 / Agent / AI 写代码"，但内容太绑定具体业务，<b>跨域同学吸收浅</b>。</li>
+          <li>来不来主要看"主题对不对胃口"；<b>奖品 / 积分是加分项，不是决定项</b>。</li>
+          <li>目前只听到"活跃圈"9 人，5 人沉默；问卷模板把所有人都当"优秀讲师"，<b>需按角色重发</b>。</li>
+        </ul>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;">
+          <span class="pill" style="background:#fff;">14 份回收</span>
+          <span class="pill" style="background:#fff;color:var(--accent);">9 人有效反馈</span>
+          <span class="pill" style="background:#fff;color:var(--low);">5 人未发声</span>
+        </div>
+        <p style="font-weight:700;margin:6px 0 4px;color:var(--accent);">三条首要动作（P0）：</p>
+        <p style="font-size:14px;">① 按角色重发问卷 + 触达沉默群体　② 下期先征集真实业务痛点再排课　③ 奖品季度换新 + 试行积分制</p>
+      </div>
+    </section>
+
+    <!-- 样本真相 -->
+    <section>
+      <div class="sec-title"><span class="bar"></span>一、先说清样本：谁真的发声了</div>
+      <div class="grid g3">
+        <div class="card"><div style="font-size:30px;font-weight:800;color:var(--brand)">14</div><div class="sm">份回收（讲师 / 学员 / 布道师 / 偶尔参加）</div></div>
+        <div class="card"><div style="font-size:30px;font-weight:800;color:var(--accent)">9</div><div class="sm">人给出实质反馈（讲师 2、学员 6、2025H2 学员 1）</div></div>
+        <div class="card"><div style="font-size:30px;font-weight:800;color:var(--low)">5</div><div class="sm">人类似"沉默"：偶尔参加 3、布道师 1、2025H2 讲师 1 全程未答</div></div>
+      </div>
+      <div class="callout"><b>关键提醒（之前漏掉）：</b>问卷开场统一写"恭喜获得 2026H1 优秀讲师"，但 14 人中仅 2 人获此称号。模板视角错配，很可能就是后段问题（最缺哪类内容 / 错过原因）零回收、部分角色全程沉默的结构性原因。后续重发需按角色给不同开场白。</div>
+      <div class="callout blue">参与次数口径：自报"博闻"人均 1.2 次、"沙龙"人均 1.4 次。注意——这 14 人本身偏"活跃圈"，沉默群体未计入，所以"偏低"主要反映活跃圈也不算高频，不能代表全员触达率。</div>
+    </section>
+
+    <!-- 大家原话 -->
+    <section>
+      <div class="sec-title"><span class="bar"></span>二、大家具体说了什么（原话摘录）</div>
+
+      <div class="card" style="margin-bottom:14px;">
+        <h4 style="margin-bottom:6px;">Q1 · 哪些主题对实际工作有帮助？<span class="sm">（7 人答）</span></h4>
+        <div class="quote"><div class="who">周遵龙 <span>2026H1 讲师</span></div>张海全的 eBPF 一体化（2025.6）有用；但"博闻多识一堂课非常业务相关，非相关业务的同学只能吸收到浅显的思想"。</div>
+        <div class="quote"><div class="who">黄海宇 / 陶文平 / 陈永东 <span>2026H1 学员</span></div>偏 Agent 工程的都挺有用；AI 提效有帮助；agent/ai 收益大（因工作涉及 agent 开发）。</div>
+        <div class="quote"><div class="who">蔡琪 <span>2026H1 学员</span></div>Java 线上排障、用 CodeBuddy 虚拟团队跑通流程、把 AI 当同事、Goal-Driven Agent。</div>
+        <div class="quote"><div class="who">高新 <span>2026H1 讲师</span></div>前端分享不多；有场 AI 分享没赶上。</div>
+        <div class="quote"><div class="who">叶红星 <span>2025H2 学员</span></div>主要是 AI 提效 / AI 节省 token 相关。</div>
+      </div>
+
+      <div class="grid g2">
+        <div class="card">
+          <h4 style="margin-bottom:6px;">Q4 · 什么机制/激励让人更愿意来？<span class="sm">（5 人答）</span></h4>
+          <div class="quote"><div class="who">高新 <span>讲师</span></div>我是看主题的：最近研究的、社区火的（AI 短剧/分镜、商业化落地、算法跨界）才去。</div>
+          <div class="quote"><div class="who">蔡琪 <span>学员</span></div>学分/积分制可兑换、会中抽奖、答题送公仔。</div>
+          <div class="quote"><div class="who">陈永东 <span>学员</span></div>奖励机制（作品完成度好有奖、抽奖），京东卡/电影券比较通用。</div>
+          <div class="quote"><div class="who">陶文平 <span>学员</span></div>奖品重复率太高，可以隔段时间换一批。</div>
+          <div class="quote"><div class="who">黄海宇 <span>学员</span></div>没特别机制需求，主要听分享+腾讯学堂。</div>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom:6px;">Q5 · 还参加过什么有趣的学习形式？<span class="sm">（4 人答）</span></h4>
+          <div class="quote"><div class="who">周遵龙 <span>讲师</span></div>5 分钟技巧闪电分享+投票+小奖励（如 gemini deep research、review 用哪个模型更稳这类经验 trick）。</div>
+          <div class="quote"><div class="who">陶文平 <span>学员</span></div>多集录播专题+留言拉群答疑；具体业务领域主题更有吸引力。</div>
+          <div class="quote"><div class="who">高新 <span>讲师</span></div>公司大课/直播课。</div>
+          <div class="quote"><div class="who">蔡琪 <span>学员</span></div>自己网上看文章/视频。</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px;">
+        <h4 style="margin-bottom:6px;">Q6 · AI 方向分享够不够？<span class="sm">（仅 1 人答）</span></h4>
+        <div class="quote"><div class="who">周遵龙 <span>2026H1 讲师</span></div>最想听"AI 提效在实际业务中怎么发现抓手"——容易陷入"拿锤子但找不到好钉子"的困境。</div>
+        <div class="callout">Q2（最缺哪类内容）、Q3（错过的原因）无人回答；Q6 仅 1 人。这三题在重发问卷时需重点改造（见建议）。</div>
+      </div>
+    </section>
+
+    <!-- 结论 -->
+    <section>
+      <div class="sec-title"><span class="bar"></span>三、我们读出什么（每条标注置信度）</div>
+      <div class="find"><div class="no">1</div><h4>技术同学对"AI 提效 / Agent / AI 写代码"反馈高度一致 <span class="badge b-ok">强共识·技术角色</span></h4><p>7 名回答者中 6 名技术同学明确点名此类主题有用；但产品 / 合规角色几乎未反馈，不能等同"全员共识"。</p></div>
+      <div class="find"><div class="no">2</div><h4>强业务绑定的内容，跨域同学吸收浅 <span class="badge b-mid">单点但明确·1 人提</span></h4><p>周遵龙明确点出"非相关业务只能吸收浅显思想"，是内容广谱化的核心矛盾。</p></div>
+      <div class="find"><div class="no">3</div><h4>参与靠"主题匹配"，激励是加分项不是主因 <span class="badge b-mid">部分共识·5 人提</span></h4><p>有人因主题/热点而来，也有人（黄海宇）明确表示不需激励；激励能降门槛但不能替代内容。</p></div>
+      <div class="find"><div class="no">4</div><h4>"AI 如何落到业务"是未被满足的需求，但样本太小 <span class="badge b-low">单点信号·仅 1 人</span></h4><p>目前仅 1 位讲师提出，不能作为定论，需扩大样本验证后再立项。</p></div>
+      <div class="find"><div class="no">5</div><h4>问卷没触达"沉默大多数" <span class="badge b-low">结构问题</span></h4><p>偶尔参加 / 布道师 / 2025H2 讲师 5 人全程未答，说明当前调研对扩面无效。</p></div>
+    </section>
+
+    <!-- 建议 -->
+    <section>
+      <div class="sec-title"><span class="bar"></span>四、优化建议（分层、可落地）</div>
+      <div class="card">
+        <h4 style="margin-bottom:8px;color:var(--accent)">P0 · 两周内可启动</h4>
+        <ul class="cl">
+          <li><span class="prio p0">1</span><b>修正问卷与触达</b>：按角色发对应开场白（别再统一"恭喜优秀讲师"）；把 Q2/Q3/Q6 改成"选择题+填空"；重新定向触达那 5 名沉默角色。</li>
+          <li><span class="prio p0">2</span><b>下期选题先征集真实痛点</b>：围绕"AI 怎么用到我业务里"开放征集案例，再据此排课，避免自嗨。</li>
+          <li><span class="prio p0">3</span><b>激励焕新</b>：奖品每季度换一批；试行积分/学分制可兑换（公仔、京东卡、电影券）。</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-top:14px;">
+        <h4 style="margin-bottom:8px;color:var(--brand)">P1 · 一季度内规划</h4>
+        <ul class="cl">
+          <li><span class="prio p1">4</span><b>试点"5 分钟闪电分享 + 投票"</b>月度场：每人讲一个小经验 trick，投票前几名给小额奖励。</li>
+          <li><span class="prio p1">5</span><b>热门主题做多集录播 + 答疑群</b>：同一专题拆多集，留言集中解答，降低一次性大课门槛。</li>
+          <li><span class="prio p1">6</span><b>按业务线精准推送</b>：对"偶尔参加 / 非核心"人群按角色、业务线推主题，替代群发。</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="foot">数据来源：部门培训平台调研工作簿（14 份回收 / 9 人有效反馈）｜ 生成于 2026-07-14</div>
+  </div>
+</body>
+</html>

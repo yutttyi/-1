@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>部门培训平台 · 调研反馈汇总</title>
+<style>
+  :root{
+    --brand:#0052D9;--brand2:#3D5AFE;--accent:#FF8800;
+    --bg:#F5F7FA;--card:#FFFFFF;--ink:#1F2329;--sub:#646A73;
+    --line:#E7EBF0;--soft:#ECF2FE;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.75;padding-bottom:60px;}
+  .banner{background:linear-gradient(120deg,#0052D9,#3D5AFE 60%,#6E4BFF);color:#fff;padding:38px 48px 32px;position:relative;overflow:hidden;}
+  .banner:after{content:"";position:absolute;right:-50px;top:-50px;width:220px;height:220px;background:radial-gradient(circle,rgba(255,136,0,.35),transparent 70%);}
+  .banner .tag{display:inline-block;background:rgba(255,255,255,.16);padding:4px 12px;border-radius:20px;font-size:13px;}
+  .banner h1{font-size:26px;margin:12px 0 6px;font-weight:700;}
+  .banner p{opacity:.9;font-size:14px;}
+  .wrap{max-width:960px;margin:0 auto;padding:0 28px;}
+  section{margin-top:30px;}
+  .sec-h{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-left:5px solid var(--brand);border-radius:12px;padding:14px 20px;box-shadow:0 4px 14px rgba(20,40,90,.05);}
+  .sec-h .no{font-size:22px;font-weight:800;color:var(--brand);}
+  .sec-h .t{font-size:19px;font-weight:700;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:0 4px 14px rgba(20,40,90,.05);}
+  .plat{display:inline-block;background:var(--soft);color:var(--brand);font-weight:700;font-size:14px;padding:4px 12px;border-radius:8px;margin-bottom:10px;}
+  ul.fb{list-style:none;}
+  ul.fb li{position:relative;padding:9px 0 9px 30px;border-bottom:1px dashed var(--line);font-size:14.5px;}
+  ul.fb li:last-child{border-bottom:none;}
+  ul.fb li .cn{position:absolute;left:0;top:9px;width:22px;height:22px;border-radius:50%;background:var(--soft);color:var(--brand);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+  .quote{background:#FAFBFE;border-left:4px solid var(--accent);padding:12px 16px;border-radius:0 10px 10px 0;margin:10px 0;font-size:14px;}
+  .quote .lab{display:inline-block;font-weight:700;color:var(--accent);margin-right:6px;}
+  .pill{display:inline-block;background:var(--soft);color:var(--brand);border-radius:8px;padding:7px 13px;font-size:13.5px;margin:6px 7px 0 0;font-weight:600;}
+  .foot{text-align:center;color:var(--sub);font-size:12px;margin-top:36px;}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr;}.banner{padding:30px 20px;}}
+</style>
+</head>
+<body>
+  <div class="banner">
+    <span class="tag">部门培训平台 · 调研反馈汇总</span>
+    <h1>博闻多识·一堂课 &amp; AISee 实战沙龙</h1>
+    <p>参与者的真实感受与建议（按主题归类整理）</p>
+  </div>
+
+  <div class="wrap">
+    <!-- 一 -->
+    <section>
+      <div class="sec-h"><span class="no">一</span><span class="t">对目前学习平台的感受</span></div>
+      <div class="grid2">
+        <div class="card">
+          <span class="plat">博闻多识一堂课</span>
+          <ul class="fb">
+            <li><span class="cn">①</span>非常业务相关，非相关业务的同学只能吸收到浅显的思想</li>
+            <li><span class="cn">②</span>有些经验类课程也不错的</li>
+            <li><span class="cn">③</span>好像前端的分享不多</li>
+            <li><span class="cn">④</span>对于合规的分享还是有价值的</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="plat">AISee 实战沙龙</span>
+          <ul class="fb">
+            <li><span class="cn">①</span>在 AI 提效这里还是有不错的帮助的</li>
+            <li><span class="cn">②</span>主要是 agent ai 这块收益较大，因为目前工作涉及 agent 开发</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 二 -->
+    <section>
+      <div class="sec-h"><span class="no">二</span><span class="t">以目前工作或团队痛点来看，希望有哪些主题</span></div>
+      <div class="card">
+        <span class="pill">AI 提效如何发现业务抓手（"拿锤子找不到好钉子"的困境）</span>
+        <span class="pill">偏 Agent 工程相关</span>
+        <span class="pill">AI 提效相关 / AI 节省 token 相关</span>
+        <span class="pill">开源 Agent 框架相关</span>
+        <ul class="fb" style="margin-top:12px;">
+          <li><span class="cn">1</span>ai 提效在实际业务中是怎么发现抓手的，现在比较容易陷入拿锤子但是找不到好钉子的困境</li>
+          <li><span class="cn">2</span>偏 Agent 工程相关</li>
+          <li><span class="cn">3</span>主要是 AI 提效相关 或者 AI 节省 token 相关</li>
+          <li><span class="cn">4</span>开源 agent 框架相关，比如 OpenClaw、Hermes 之类的</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 三 -->
+    <section>
+      <div class="sec-h"><span class="no">三</span><span class="t">有什么机制 / 激励，能吸引参加或提高收获</span></div>
+      <div class="card">
+        <ul class="fb">
+          <li><span class="cn">1</span>有奖励机制比如（作品完成度好的有奖励、抽奖啥的）肯定会提高参与意愿吧；jd 卡、电影券之类估计比较通用</li>
+          <li><span class="cn">2</span>比如学分 / 积分制参加培训获得积分，积分可累计和兑换、会中抽奖、答题送公仔礼物之类的</li>
+          <li><span class="cn">3</span>奖品重复率太高啦，可以隔一段时间换一批；</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 四 -->
+    <section>
+      <div class="sec-h"><span class="no">四</span><span class="t">之前参与过的有趣的学习形式</span></div>
+      <div class="card">
+        <div class="quote"><span class="lab">形式 1</span>有一些 ai 技巧分享，可能每个人都有一些锦囊妙计，但都只能分享 5–10 min；之前实验室会定期做这种分享，每个人报名讲五分钟，然后大家投票哪些技巧更有价值一点，最后前几名送京东卡之类的就行了，或者报名的人都送个小娃娃；一般不规定范畴，比如有人会分享"做调研报告 gemini 效果比 gpt 和 claude 都好"这种小经验或 trick（gemini 的 deep research 比市面上其他模型效果都好，只是 gemini 模型能力比较差而已）；或者 review 代码一般用什么模型、什么 skill 更稳定，都是比较经验向的。</div>
+        <div class="quote"><span class="lab">形式 2</span>看主题的，有些主题是我最近正在研究的，就去听一下开拓下视野；还有一些是社区比较火的、流行的、非工作的，也可以拓展视野；比如动画制作的、做分镜啊，现在 ai 短剧也挺火的，或者一些商业化的产品比较能体现 ai 的价值落地的（因为现在 ai 落地的产品更新很快）；还会关注一些算法相关的，现在每个人突破能力边界，每个人都在往全栈发展，有些跨边界的；能扩展做产品的思路的，都是增加见识的，因为都是传统工具 ai 化的转变。</div>
+        <div class="quote"><span class="lab">形式 3</span>多集录播的课程也比较不错；就是同一个专题的，分多子集录播的内容；有问题可以看留言然后拉群集中解答；有些基础知识是通用的呢；具体业务领域主题会更有吸引力。</div>
+      </div>
+    </section>
+
+    <div class="foot">部门培训平台调研反馈汇总 ｜ 整理于 2026-07-14</div>
+  </div>
+</body>
+</html>
