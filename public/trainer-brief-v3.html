@@ -82,12 +82,7 @@
     <div class="bar">
       <span class="save" id="saveTip">已载入你的模板</span>
       <button class="btn ghost" id="editBtn" onclick="toggleEdit()">✎ 模板编辑</button>
-      <button class="btn ghost" onclick="exportJSON()">导出</button>
-      <button class="btn ghost" onclick="exportHTML()">导出共享HTML</button>
-      <button class="btn ghost" onclick="document.getElementById('fileInput').click()">导入</button>
-      <button class="btn ghost" onclick="clearAll()">清空</button>
-      <button class="btn" onclick="window.print()">打印 / 存PDF</button>
-      <input type="file" id="fileInput" accept="application/json" onchange="importJSON(event)">
+      <button class="btn" onclick="save()">💾 保存</button>
     </div>
   </div>
 
